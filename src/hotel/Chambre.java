@@ -5,11 +5,15 @@ public class Chambre {
 	protected int places;
 	protected boolean reservee;
 	protected int nbreLits;
+	protected float tarif;
 	
-	public Chambre(int places,int nbreLits, boolean reservee) {
+
+	
+	public Chambre(int places, int nbreLits, float tarif, boolean reservee) {
 		this.places=places;
 		this.reservee=reservee;
 		this.nbreLits=nbreLits;
+		this.tarif=tarif;
 	}
 	
 	public boolean getReservee() {
@@ -18,6 +22,10 @@ public class Chambre {
 	
 	public int getPlaces(){
 		return this.places;
+	}
+	
+	public float getTarif() {
+		return this.tarif;
 	}
 	
 	public int getLits() {

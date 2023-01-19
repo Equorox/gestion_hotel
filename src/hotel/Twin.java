@@ -5,7 +5,7 @@ package hotel;
 public class Twin extends Chambre {
 	
 	public Twin(boolean reservee) {
-		super(2,2, reservee);
+		super(2,2,10, reservee);
 	}
 	
 }
