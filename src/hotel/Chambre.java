@@ -9,10 +9,9 @@ public class Chambre {
 	
 
 	
-	public Chambre(int places, int nbreLits, float tarif, boolean reservee) {
+	public Chambre(int places, float tarif, boolean reservee) {
 		this.places=places;
 		this.reservee=reservee;
-		this.nbreLits=nbreLits;
 		this.tarif=tarif;
 	}
 	
@@ -39,6 +38,7 @@ public class Chambre {
 	public void setPlaces(int places) {
 		this.places=places;
 	}
+	
 	
 	
 }

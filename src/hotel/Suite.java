@@ -11,7 +11,7 @@ public class Suite extends Chambre {
 	private String[] piecesPossibles = {"Chambre","Salon","Cuisine"};
  	
 	public Suite(int places,int nbreLits, boolean reservee) {
-		super(places,nbreLits,50, reservee);
+		super(places,50, reservee);
 	}
 	
 }
