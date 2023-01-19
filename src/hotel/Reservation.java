@@ -59,7 +59,7 @@ public class Reservation {
 	public void reservation(Chambre chambre, String[] dates) {
 		LocalDate dateDebut = LocalDate.parse(dates[0]);
 		LocalDate dateFin = LocalDate.parse(dates[1]);
-
+		chambre.setReservee(true);
 		while (dateDebut.compareTo(dateFin) <= 0) {
 			if (listeReservations.get(dateDebut) != null) {
 				ArrayList<Chambre> chambreAdded = listeReservations.get(dateDebut);
