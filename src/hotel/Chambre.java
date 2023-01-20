@@ -52,8 +52,6 @@ public class Chambre {
 		return this.clients;
 	}
 	
-	
-	
 	public void setReservations(LocalDate date, boolean reservation) {
 		this.reservations.put(date, reservation);
 	}
