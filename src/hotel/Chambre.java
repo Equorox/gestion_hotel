@@ -58,6 +58,11 @@ public class Chambre {
 		this.reservations.put(date, reservation);
 	}
 	
+	public void setClients(LocalDate date, Client client) {
+		this.clients.put(date, client);
+	}
+	
+	
 	public void setPlaces(int places) {
 		this.places=places;
 	}

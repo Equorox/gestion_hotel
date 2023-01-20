@@ -4,37 +4,43 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Menu {
-	
+
 	private static Scanner sc = new Scanner(System.in);
-	
-	
+
 	public static int choix() {
 		System.out.print("Choix : ");
 		int choix = sc.nextInt();
 		System.out.println();
 		return choix;
 	}
-	
+
 	// Fais entrer une date à l'utilisateur
 	public static LocalDate dateInput() {
 		System.out.printf("Aujourd'hui ?%n1. Oui%n2. Non%n");
 		int choix = choix();
-		
+
 		switch (choix) {
 		case 1:
 			return LocalDate.now();
 		default:
-			System.out.print("Jour : ");
-			String jour = sc.next();
-			System.out.printf("Mois : ");
-			String mois = sc.next();
-			System.out.printf("Année : ");
-			String annee = sc.next();
-			LocalDate date = LocalDate.parse(String.format("%d-%d-%d", annee, mois, jour));
+			boolean goodDate = false;
+			LocalDate date = LocalDate.now();
+			while (date.compareTo(LocalDate.now()) < 0) {
+				System.out.print("Jour : ");
+				String jour = sc.next();
+				System.out.printf("Mois : ");
+				String mois = sc.next();
+				System.out.printf("Année : ");
+				String annee = sc.next();
+				date = LocalDate.parse(String.format("%d-%d-%d", annee, mois, jour));
+				if (date.compareTo(LocalDate.now())<0) {
+					System.out.println("Veuillez entrer une date future.");
+				}
+			}
 			return date;
 		}
 	}
-	
+
 	public Client clientInput() {
 		System.out.print("Entrez le nom du client : ");
 		String nom = sc.next();
@@ -43,8 +49,7 @@ public class Menu {
 		Client client = new Client(nbre, nom);
 		return client;
 	}
-	
-	
+
 	public int afficheMenu() {
 		System.out.println("-------MENU-------");
 		System.out.println("1. Etat de l'hotel");
@@ -59,42 +64,44 @@ public class Menu {
 		int choix = choix();
 		return choix;
 	}
-	
+
 	public void processMenu(int choix, Hotel h) {
 		LocalDate date = LocalDate.now();
 		switch (choix) {
 		case 1:
-			date=dateInput();
+			date = dateInput();
 			h.afficherListeChambres(date);
 			break;
 		case 2:
-			date=dateInput();
+			date = dateInput();
 			System.out.println(h.nbreChambresReservee(date));
 			break;
 		case 3:
-			date=dateInput();
-			System.out.println(h.nbreChambresLibres(date)); 
+			date = dateInput();
+			System.out.println(h.nbreChambresLibres(date));
 			break;
 		case 4:
-			date=dateInput();
+			date = dateInput();
 			h.affichePremiereLibre(date);
 			break;
 		case 5:
-			date=dateInput();
+			date = dateInput();
 			h.afficheDerniereLibre(date);
 			break;
 		case 6:
-			if (!GestionSession.tryToConnect()) return ;
-			date=dateInput();
+			if (!GestionSession.tryToConnect())
+				return;
+			date = dateInput();
 			menuReservation(h, date);
 			break;
 		case 7:
-			if (!GestionSession.tryToConnect()) return ;
-			date=dateInput();
+			if (!GestionSession.tryToConnect())
+				return;
+			date = dateInput();
 			menuLiberer(h, date);
 			break;
 		case 8:
-			date=dateInput();
+			date = dateInput();
 			h.getReservations().chiffreDAffaire(dateIntervalleInput());
 			break;
 		case 9:
@@ -105,35 +112,40 @@ public class Menu {
 			break;
 		}
 	}
-	
+
 	public void menuReservation(Hotel h, LocalDate date) {
 		System.out.printf("Quel type de chambre voulez vous réserver ?%n1. Single%n2. Twin%n3. Double%n4. Suite%n");
-		int choixChambre = choix()-1;
+		int choixChambre = choix() - 1;
 		Chambre chambre = h.getListeChambres().get(h.premiereLibre(date)[choixChambre]);
 		Client client = clientInput();
-		
-		
+
 		int nbre = client.getNbre();
 		LocalDate[] dates = dateIntervalleInput();
-		while (nbre>0) {
+		while (nbre > 0 && h.getListeChambres().get(h.premiereLibre(date)[choixChambre])!=null) {
 			h.reservation(chambre, dates);
-			nbre-=chambre.getPlaces();
+			nbre -= chambre.getPlaces();
 			chambre = h.getListeChambres().get(h.premiereLibre(date)[choixChambre]);
+			chambre.setClients(date, client);
+			client.setNbre(nbre);
+			return;
 		}
+		System.out.printf("Plus de chambre disponible, il reste %d clients à loger.", client.getNbre());
 		
+		
+
 	}
-	
-	
+
 	public void menuLiberer(Hotel h, LocalDate date) {
 		h.afficherListeChambres(date);
 		System.out.println("Quelle chambre voulez vous vider ?");
-		int choixChambreAVider = choix()-1;
+		int choixChambreAVider = choix() - 1;
 		h.getReservations().libererChambre(h.getListeChambres().get(choixChambreAVider), dateIntervalleInput());
-		
+
 	}
-	
+
 	/**
 	 * Affiche le menu et demande à l'utilisateur d'entrer un intervalle de dates
+	 * 
 	 * @return un tableau qui comprend les deux bornes de l'intervalle
 	 */
 	public static LocalDate[] dateIntervalleInput() {
