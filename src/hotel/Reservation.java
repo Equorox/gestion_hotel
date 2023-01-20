@@ -6,19 +6,16 @@ import java.util.*;
 public class Reservation {
 
 	private LinkedHashMap<LocalDate, ArrayList<Chambre>> listeReservations = new LinkedHashMap<>();
-	private static Scanner sc = new Scanner(System.in);
 	
 	public Reservation() {
 		remplisDates();
 	}
-	
-	
+		
 	public LinkedHashMap<LocalDate, ArrayList<Chambre>> getListeReservations() {
 		return this.listeReservations;
 	}
-	
-	// Genere une liste de date à partir de la date courante (format date :
-	// yyyy-MM-dd)
+
+	// Genere une liste de date à partir de la date courante (format date : yyyy-MM-dd)
 	public ArrayList<LocalDate> genereDates() {
 		LocalDate start = LocalDate.now();
 		LocalDate end = LocalDate.now().plusYears(1);
@@ -37,42 +34,61 @@ public class Reservation {
 		}
 	}
 	
-	/**
-	 * Menu Reservation --> Affiche le menu et demande à l'utilisateur d'entrer un intervalle de dates
-	 * @return un tableau qui comprend les deux bornes de l'intervalle
-	 */
-	public String[] reservationMenu() {
-		System.out.println("----RESERVATION----");
-		System.out.printf("Entrez la date de début(format yyyy-MM-dd) : ");
-		String dateDebut = sc.next();
-		System.out.printf("%nEntrez la date de fin (format yyyy-MM-dd) : ");
-		String dateFin = sc.next();
-		String[] dates = { dateDebut, dateFin };
-		return dates;
-	}
+
 
 	 /**
     * @param chambre la chambre à réserver
     * @param dates <-- reservationMenu()
     * @return void, remplis la listeReservation aux dates entrées par l'utilisateur
     */
-	public void reservation(Chambre chambre, String[] dates) {
-		LocalDate dateDebut = LocalDate.parse(dates[0]);
-		LocalDate dateFin = LocalDate.parse(dates[1]);
-		chambre.setReservee(true);
+	public void reservation(Chambre chambre, LocalDate[] dates) {
+		LocalDate dateDebut = dates[0];
+		LocalDate dateFin = dates[1];
 		while (dateDebut.compareTo(dateFin) <= 0) {
 			if (listeReservations.get(dateDebut) != null) {
 				ArrayList<Chambre> chambreAdded = listeReservations.get(dateDebut);
 				chambreAdded.add(chambre);
 				listeReservations.put(dateDebut, chambreAdded);
+				chambre.setReservations(dateDebut, true);
 			} else {
 				ArrayList<Chambre> chambreAdded = new ArrayList<>();
 				chambreAdded.add(chambre);
 				listeReservations.put(dateDebut, chambreAdded);
+				chambre.setReservations(dateDebut, true);
 			}
 			System.out.printf("Chambre réservée pour le %s%n", dateDebut);
 			dateDebut = dateDebut.plusDays(1);
 		}
+	}
+	
+	
+	public void libererChambre(Chambre chambre, LocalDate[] dates) {
+
+		LocalDate dateDebut = dates[0];
+		LocalDate dateFin = dates[1];
+		while (dateDebut.compareTo(dateFin) <= 0) {
+			for (int i=0;i<listeReservations.get(dateDebut).size();i++) {
+				if (listeReservations.get(dateDebut).get(i).equals(chambre)) {
+					listeReservations.get(dateDebut).remove(i);
+					chambre.getReservations().put(dateDebut, false);
+					chambre.getClients().put(dateDebut, null);
+				}
+			}
+			dateDebut = dateDebut.plusDays(1);
+		}
+	}
+	
+	public float chiffreDAffaire(LocalDate[] dates) {
+		int somme = 0;
+		LocalDate dateDebut = dates[0];
+		LocalDate dateFin = dates[1];
+		while (dateDebut.compareTo(dateFin) <= 0) {
+			for (Chambre chambre : listeReservations.get(dateDebut)) {
+				somme += chambre.getTarif();
+			}
+			dateDebut = dateDebut.plusDays(1);
+		}
+		return somme;
 	}
 	
 	

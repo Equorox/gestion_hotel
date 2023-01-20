@@ -18,19 +18,36 @@ public class DemoGestionHotel {
 //		
 //		h1.affichePremiereLibre();
 //		h1.afficheDerniereLibre();
+
+//		LocalDate date = LocalDate.now();
+//		
+//		Chambre chambre = new Chambre(2, 10);
+//		h1.reservation(date, chambre);
+//		
+//		System.out.println(chambre.getReservations());
+
 		
-		h1.reservation();
+		Session admin = new Session("emile","pass");
+		GestionSession.addSession(admin.getLogin(), admin.getPassword());
 		
 		
-		
+		// TODO fonction pour demander le mdp
+//		 if (!GestionSession.tryToConnect()) return ;//tente de se connecter, termine
+//		 l'action si la connexion a échoué.
+
 //		System.out.println(h1.getListeReservations());
-		
+
 //		for (LocalDate date : h1.getListeReservations().keySet()) {
 //			System.out.println(date);
 //		}
+		
+		Menu menu = new Menu();
+		
+		while (true) {
+			
+			menu.processMenu(menu.afficheMenu(), h1);
+		}
+
 	}
-	
-	
-	
 
 }

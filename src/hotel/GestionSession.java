@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GestionSession {
-    ArrayList<Session>sessions = new ArrayList<Session>();
+    private static ArrayList<Session>sessions = new ArrayList<Session>();
 
-    public void addSession(String login, String password) {
+    public static void addSession(String login, String password) {
         sessions.add(new Session(login,password));
     }
     
@@ -15,7 +15,7 @@ public class GestionSession {
      * @param password le mot de passe à tester
      * @return true si la session existe, false sinon.
      */
-    public boolean sessionExist (String login, String password) {
+    public static boolean sessionExist (String login, String password) {
         for (Session s : sessions) {
             if (s.getLogin().equals(login) && s.getPassword().equals(password)) {
                 return true;
@@ -24,7 +24,7 @@ public class GestionSession {
         return false;
     }
     
-    public boolean tryToConnect() {
+    public static boolean tryToConnect() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Cette action demande une authentification. entrez votre login : ");
         String login = sc.next();
@@ -32,10 +32,13 @@ public class GestionSession {
         String password = sc.next();
         if (sessionExist(login, password)) {
             System.out.println("Utilisateur authentifié.");
+//            sc.close();
             return true;
         }
         System.out.println("Utilisateur non reconnu.");
+//        sc.close();
         return false;
+        
     }
 
     public ArrayList<Session> getSessions() {

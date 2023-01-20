@@ -4,8 +4,8 @@ package hotel;
 
 public class Double extends Chambre{
 	
-	public Double(boolean reservee) {
-		super(2,10, reservee);
+	public Double() {
+		super(2,10);
 	}
 	
 }
