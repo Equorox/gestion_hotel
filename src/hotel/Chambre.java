@@ -45,7 +45,7 @@ public class Chambre {
 	}
 	
 	public float getTarif() {
-		return this.tarif;
+		return this.tarif*this.places;
 	}
 	
 	public LinkedHashMap<LocalDate,Client> getClients(){

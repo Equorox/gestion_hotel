@@ -101,13 +101,14 @@ public class Menu {
 			break;
 		case 8:
 			date = dateInput();
-			h.getReservations().chiffreDAffaire(dateIntervalleInput());
+			System.out.println(h.getReservations().chiffreDAffaire(dateIntervalleInput()));
 			break;
 		case 9:
 			System.out.println("A bientôt !");
 			System.exit(0);
 			break;
 		default:
+			System.out.println("Entrez une des valeurs demandées");
 			break;
 		}
 	}
