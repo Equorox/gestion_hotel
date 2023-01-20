@@ -23,7 +23,6 @@ public class Menu {
 		case 1:
 			return LocalDate.now();
 		default:
-			boolean goodDate = false;
 			LocalDate date = LocalDate.now();
 			while (date.compareTo(LocalDate.now()) < 0) {
 				System.out.print("Jour : ");
