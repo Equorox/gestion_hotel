@@ -1,5 +1,5 @@
 package hotel;
-
+//commentaire sarah
 public class Client {
 
 	protected int nbrePersonnes;
